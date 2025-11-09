@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Envelope — Click to Reveal Letter 💌</title>
+  <style>
+    body {
+      background-color: #fff1f3;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: #a91b60;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    .envelope-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      flex-direction: column;
+    }
+
+    .envelope {
+      position: relative;
+      width: 220px;
+      height: 140px;
+      background: linear-gradient(to bottom, #ffb3b3, #ffd6d6);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      overflow: visible;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .envelope:hover {
+      transform: scale(1.05);
+    }
+
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60%;
+      background: #e63946;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      z-index: 1;
+      transition: transform 0.5s ease;
+      transform-origin: top;
+    }
+
+    .envelope.open .envelope-flap {
+      transform: rotateX(180deg);
+    }
+
+    .envelope-letter {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      height: 60%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .envelope-text {
+      color: #b00020;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-align: center;
+      z-index: 3;
+      position: relative;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    
+    .letter-popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 500px;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      z-index: 10;
+      color: #000000;
+      text-align: justify;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .letter-popup.show {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -45%); }
+      to { opacity: 1; transform: translate(-50%, -50%); }
+    }
+
+    .close-btn {
+      display: block;
+      margin: 15px auto 0 auto;
+      padding: 8px 16px;
+      border: none;
+      background-color: #e63946;
+      color: #fff;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .close-btn:hover {
+      background-color: #ffffff;
+    }
+
+    .tip {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: #a85c7f;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Hi Bebe 💌 Please click the heart envelope</h1>
+
+  <div class="envelope-container">
+    <div class="envelope" id="envelope">
+      <div class="envelope-flap"></div>
+      <div class="envelope-letter">
+        <p class="envelope-text">A message for you 💖</p>
+      </div>
+    </div>
+  </div>
+
+  
+
+ 
+  <div class="letter-popup" id="letterPopup">
+    <p>
+      Dear Zel, <br><br>
+      I’ve been thinking a lot lately, and I feel like I need to be honest with myself and with you. 
+      I’m tired not just physically, but emotionally too. I’ve been trying so hard to hold on, to stay, 
+      to make things work, but lately, I feel that I’m no longer needed, or that my 
+      presence doesn’t really matter anymore.<br><br>
+      It hurts to admit this, but I feel like I’ve become more of a burden than a blessing. 
+      I keep waiting for some kind of sign that I still have a place in your life, but the silence, 
+      the distance, and the way things have changed all tell me otherwise.<br><br>
+      So I think it’s time for me to let go  not out of anger or resentment, but out of love 
+      and self-respect. I don’t want to keep holding on to something that no longer holds me back. 
+      I just need peace, even if that means walking away from something I once cared about deeply.<br><br>
+      Thank you for everything  for the memories, the moments, and the lessons. 
+      I’ll always be grateful for what we shared, even if it’s time for me to finally rest and move on.<br><br>
+      Thankyou, Sorry and I love you. I just can take it anymore. <br>
+      - Ji
+    </p>
+    <button class="close-btn" id="closeLetter">Close 💔</button>
+  </div>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    const letterPopup = document.getElementById('letterPopup');
+    const closeBtn = document.getElementById('closeLetter');
+
+    envelope.addEventListener('click', () => {
+      envelope.classList.add('open');
+      setTimeout(() => {
+        letterPopup.classList.add('show');
+      }, 500);
+    });
+
+    closeBtn.addEventListener('click', () => {
+      letterPopup.classList.remove('show');
+      envelope.classList.remove('open');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if ((e.key === "Enter" || e.key === " ") && !letterPopup.classList.contains('show')) {
+        envelope.click();
+      }
+    });
+  </script>
+
+</body>
+</html>
